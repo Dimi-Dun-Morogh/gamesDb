@@ -12,6 +12,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 body {
  background-image: url('./assets/wallpaper.jpg');

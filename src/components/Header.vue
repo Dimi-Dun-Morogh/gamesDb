@@ -39,7 +39,7 @@ export default {
     ...mapActions('gamesStore', ['searchGame']),
     searchQuery(e) {
       e.preventDefault();
-      this.searchGame(this.searchValue);
+      this.$emit('onSearch', this.searchValue);
     },
   },
 };
@@ -47,7 +47,7 @@ export default {
 
 <style scoped>
 .header {
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 .navbar {
   background-color: rgba(0, 0, 0, 0.7) !important;
@@ -74,5 +74,7 @@ export default {
   border-bottom-left-radius: 5px;
 border-bottom-right-radius: 5px;
 padding-bottom: 5px;
+background: linear-gradient(90deg, rgba(2, 0, 36, 0.41) 0%,
+ rgb(11, 19, 14) 52%, rgb(137, 138, 159) 100%);
 }
 </style>
