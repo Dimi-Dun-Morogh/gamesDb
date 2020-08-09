@@ -2,7 +2,8 @@ import axios from '@/plugins/axios';
 import mutations from './mutations';
 
 const {
-  CURRENT_PAGE, CURRENT_QUERY, TOTAL_RESULTS, TOTAL_RESULTS_LAST_MONTH, GAMES_RELEASED,
+  CURRENT_PAGE, CURRENT_QUERY, TOTAL_RESULTS, TOTAL_RESULTS_LAST_MONTH,
+  GAMES_RELEASED, SET_FILTER, SET_PLATFORMS,
 } = mutations;
 const gamesLastMonth = {
   namespaced: true,
@@ -12,6 +13,8 @@ const gamesLastMonth = {
     totalResults: 0,
     totalResultsLastMonth: 0,
     gamesReleased: [],
+    filter: '',
+    platforms: [],
   },
   getters: {
     totalResults: ({ totalResults }) => totalResults,
@@ -19,6 +22,8 @@ const gamesLastMonth = {
     gamesReleased: ({ gamesReleased }) => gamesReleased,
     gamesPerPage: ({ gamesPerPage }) => gamesPerPage,
     currentPage: ({ currentPage }) => currentPage,
+    filter: ({ filter }) => filter,
+    platforms: ({ platforms }) => platforms,
 
   },
   mutations: {
@@ -37,6 +42,12 @@ const gamesLastMonth = {
     [GAMES_RELEASED](state, value) {
       state.gamesReleased = value;
     },
+    [SET_FILTER](state, value) {
+      state.filter = value;
+    },
+    [SET_PLATFORMS](state, value) {
+      state.platforms = value;
+    },
   },
   actions: {
     async searchGamesLastMonth({ commit, dispatch }) {
@@ -52,9 +63,9 @@ const gamesLastMonth = {
       }
     },
     async searchGamesCreatedAll({ commit, getters }) {
-      const { gamesPerPage, currentPage } = getters;
+      const { gamesPerPage, currentPage, filter } = getters;
       try {
-        const data = await axios.get(`games?page_size=${gamesPerPage}&ordering=-rating&page=${currentPage}`);
+        const data = await axios.get(`games?${filter}page_size=${gamesPerPage}&ordering=-rating&page=${currentPage}`);
         commit(GAMES_RELEASED, data.results);
         commit(TOTAL_RESULTS, data.count);
       } catch (error) {
@@ -68,8 +79,19 @@ const gamesLastMonth = {
       const dates = `${date.getFullYear()}-${month}-01,${date.getFullYear()}-${month}-${lastday}`;
       return dates;
     },
+    async getPlatforms({ commit }) {
+      try {
+        const data = await axios.get('platforms');
+        commit(SET_PLATFORMS, data.results);
+      } catch (error) {
+        console.log(error);
+      }
+    },
     setPage({ commit }, value) {
       commit(CURRENT_PAGE, value);
+    },
+    setFilter({ commit }, value) {
+      commit(SET_FILTER, value);
     },
   },
 };

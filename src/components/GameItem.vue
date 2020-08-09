@@ -62,7 +62,7 @@ export default {
 }
 .game-item:hover {
    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.7);
-  transform: scale(1.12);
+  transform: scale(1.02);
 }
 .game-item-poster {
     position: absolute;

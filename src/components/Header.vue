@@ -8,7 +8,8 @@
     <b-form-input id="range-1" v-model="year" type="range" min="1970" max="2020"></b-form-input>
     <div class="button-wrap">
       <!-- <div class="mt-2">Year: {{ year }}</div> -->
-     <b-button size="sm"><b-icon icon="search" aria-hidden="true"></b-icon> {{ year }}</b-button>
+     <b-button size="sm" @click="searchYear"><b-icon icon="search"
+     aria-hidden="true"></b-icon> {{ year }}</b-button>
     </div>
   </div>
         <b-nav-form>
@@ -22,24 +23,41 @@
 
           >
         </b-nav-form>
+        <FiltersSideBar class="filters"/>
       </b-container>
     </b-navbar>
   </header>
 </template>
 <script>
 import { mapActions } from 'vuex';
+import FiltersSideBar from '@/components/FiltersSideBar.vue';
 
 export default {
   name: 'Header',
+  components: {
+    FiltersSideBar,
+  },
   data: () => ({
     searchValue: '',
     year: 2020,
   }),
   methods: {
-    ...mapActions('gamesStore', ['searchGame']),
+    ...mapActions('gamesReleased', ['setPage', 'searchGamesCreatedAll', 'setFilter']),
     searchQuery(e) {
       e.preventDefault();
-      this.$emit('onSearch', this.searchValue);
+      // this.$emit('onSearch', this.searchValue);
+      const query = `search=${this.searchValue}&`;
+      this.setPage(1);
+      this.setFilter(query);
+
+      this.searchGamesCreatedAll();
+    },
+    searchYear() {
+      const dates = `dates=${this.year}-01-01,${this.year}-12-12&`;
+      this.setPage(1);
+      this.setFilter(dates);
+
+      this.searchGamesCreatedAll();
     },
   },
 };
@@ -76,5 +94,10 @@ border-bottom-right-radius: 5px;
 padding-bottom: 5px;
 background: linear-gradient(90deg, rgba(2, 0, 36, 0.41) 0%,
  rgb(11, 19, 14) 52%, rgb(137, 138, 159) 100%);
+}
+.filters {
+  position: absolute;
+right: 0;
+top: 60px;
 }
 </style>

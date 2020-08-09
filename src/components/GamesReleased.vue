@@ -1,7 +1,7 @@
 <template>
 <div class="container wrap">
   <h3>Games released last month: {{this.totalResultsLastMonth}}</h3>
-  <h3>Games released total: {{this.totalResults}}</h3>
+  <h3>Games found: {{this.totalResults}}</h3>
   <div  class="game-items-wrap">
   <div v-for="(game,index) in gamesReleased"  :key="index">
     <GameItem :game="game"/>
@@ -20,6 +20,7 @@ export default {
   mounted() {
     this.searchGamesLastMonth();
     this.searchGamesCreatedAll();
+    this.getPlatforms();
   },
   components: {
     GameItem,
@@ -28,7 +29,7 @@ export default {
     ...mapGetters('gamesReleased', ['totalResults', 'totalResultsLastMonth', 'gamesReleased']),
   },
   methods: {
-    ...mapActions('gamesReleased', ['searchGamesLastMonth', 'searchGamesCreatedAll']),
+    ...mapActions('gamesReleased', ['searchGamesLastMonth', 'searchGamesCreatedAll', 'getPlatforms']),
     onMount() {
       console.log('hi');
     },
@@ -43,5 +44,6 @@ export default {
   flex-wrap: wrap;
 }
 .wrap {
+padding: 0;
 }
 </style>
