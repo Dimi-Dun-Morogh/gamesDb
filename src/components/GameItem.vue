@@ -6,9 +6,7 @@
     <span>{{game.name}} {{releaseDate}}</span>
   </div>
   <div class="game-item-more-info">
-    <b-button class="moreInfo-btn shadow-none" @click="detailed()">More Info</b-button>
-  </div>
-  <div class="game-item-platforms">
+    <div class="game-item-platforms">
     <b-dropdown id="dropdown-dropup" dropup text="Platforms"
      variant="success" class="dropdown-platforms">
     <b-dropdown-item href="#" v-for="(platform,index) in game.platforms" :key="index">
@@ -16,6 +14,9 @@
 
   </b-dropdown>
   </div>
+    <b-button class="moreInfo-btn btn-success shadow-none" @click="detailed()">More Info</b-button>
+  </div>
+
   <div class="game-item-bottom">
 <span>{{genre}}</span>
 <span><b-icon-star-fill  class="rating">
@@ -119,35 +120,15 @@ font-size: 15px;
   border-radius: 0;
 }
 .game-item-more-info {
-  margin-top: auto;
-  margin-bottom: 30px;
-  height: 100px;
-width: 100px;
-background-color: #6c757d;
-border-radius: 50%;
-position: relative;
-align-self: center;
-background-color: rgba(0,0,0,.3);
-border: 1px inset  #e5a714c9;
-opacity: 0;
-top: 50%;
-position: absolute;
-}
-.game-item:hover .game-item-more-info {
-  opacity: 1;
-}
-.game-item-more-info:hover {
-  transform: scale(1.02);
-  background-color: rgba(0,0,0,.7);
+  display: flex;
+justify-content: space-between;
+margin-top: auto;
 }
 .moreInfo-btn {
-position: absolute;
-transform: translate(-50%,30%);
-background-color: transparent;
-border-color: transparent;
+border-radius: 0;
+width: 107.27px;
 }
 .moreInfo-btn:focus,.moreInfo-btn:active,.moreInfo-btn:hover {
-  background-color: transparent!important;
   border-color: transparent;
 }
 </style>

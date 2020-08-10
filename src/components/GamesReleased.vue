@@ -52,4 +52,30 @@ export default {
 .wrap {
 padding: 0;
 }
+.wrap  h3 {
+  color:#000;
+}
+@media (max-width:1200px) {
+  .game-items-wrap {
+    justify-content:space-around;
+  }
+}
+@media (max-width:996px) {
+.wrap {
+  margin-top:90px;
+}
+.game-items-wrap {
+  justify-content: space-evenly;
+}
+}
+@media (max-width:576px) {
+  .wrap {
+  margin-top:100px;
+}
+}
+@media (max-width:376px) {
+  .game-items-wrap {
+    padding-top: 15px;
+  }
+}
 </style>

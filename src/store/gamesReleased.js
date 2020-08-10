@@ -97,7 +97,6 @@ const gamesLastMonth = {
         // eslint-disable-next-line no-return-assign
         await dispatch('getLastMonthDates').then((dates2) => dates = dates2);
         const data = await axios.get(`games?dates=${dates}&ordering=-released`);
-        console.log(data, dates);
         commit(TOTAL_RESULTS_LAST_MONTH, data.count);
       } catch (error) {
         console.log(error);

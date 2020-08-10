@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header v-on:onSearch="onSearch"/>
+    <Header  id="head" v-on:onSearch="onSearch"/>
     <GamesReleased/>
     <Pagination
     :total="totalResults"
@@ -9,6 +9,9 @@
     v-on:onPageChanged="onPageChange"
     v-on:manualPage="onPageChange"
     />
+    <div class="api">
+      API - <a href="https://api.rawg.io">RAWG best api EU</a>
+    </div>
   </div>
 </template>
 
@@ -38,7 +41,22 @@ export default {
     onPageChange(value) {
       this.setPage(value);
       this.searchGamesCreatedAll();
+      const header = document.querySelector('#head');
+      this.$scrollTo(header);
     },
   },
 };
 </script>
+<style scoped>
+.api {
+  text-align: center;
+background-color: rgba(0,0,0,.4);
+color: #fff;
+}
+.api a {
+  font-size: 14px;
+text-decoration: none;
+color: black;
+font-weight: bold;
+}
+</style>

@@ -1,6 +1,14 @@
 <template>
   <b-container class="wrap">
-<!-- <h3>{{currentGame.name}}({{currentGame.released.slice(0,4)}})</h3> -->
+    <b-button variant="success"
+        @click="backToMain" class="mb-2 btn-back">
+      <b-icon icon="arrow-left" aria-hidden="true"></b-icon> back
+    </b-button>
+<h3>{{currentGame.name}}({{currentGame.released.slice(0,4)}})</h3>
+<div class="clip" v-show="currentGame.clip!==null">
+  <video :src="clipSrc" controls></video>
+
+</div>
 <b-carousel
       id="carousel-1"
       v-model="slide"
@@ -68,6 +76,11 @@ export default {
   }),
   computed: {
     ...mapGetters('gamesReleased', ['currentGame']),
+    clipSrc() {
+      return this.currentGame.clip !== null ? this.currentGame.clip.clip : '';
+    },
+  },
+  watch: {
   },
   methods: {
     onSlideStart() {
@@ -76,6 +89,9 @@ export default {
     onSlideEnd() {
       this.sliding = false;
     },
+    backToMain() {
+      this.$router.push({ name: 'Main' });
+    },
   },
 };
 </script>
@@ -83,12 +99,16 @@ export default {
 .wrap {
   color: #ffff;
   max-width: 600px;
-  padding-top: 65px;
+  padding-top: 15px;
+}
+.wrap h3 {
+  margin-top: 40px;
+background-color: rgba(0,0,0,.5);
 }
 .slider {
 overflow: hidden;}
 .slider img {
-  height: 350px !important;
+  /* height: 350px ; */
 }
 ul {margin: 0;
 padding: 0;
@@ -114,10 +134,22 @@ border-radius: 5px;
  border-bottom: 1px solid white;
 }
 .stores, .genres, .platforms {
-  /* display: flex; */
   margin-left: 30px;
   margin-right: 30px;
 
   padding:10px 0
+}
+video {
+  width: 100%;
+  background-color: black;
+}
+.btn-back {
+  position: absolute;
+left: 15px;
+}
+@media( max-width:776px)  {
+.logo {
+  top:110px;
+}
 }
 </style>

@@ -19,7 +19,8 @@
       {{platform.name}}
     </span>
   </div>
-         <b-button size="sm" class="btn-filter" @click="SearchFiltered"><b-icon icon="search"
+         <b-button size="sm" v-b-toggle.sidebar-1
+          class="btn-filter" @click="SearchFiltered"><b-icon icon="search"
      aria-hidden="true"></b-icon>Search</b-button>
      <div class="sort-by-title">Sort by:</div>
      <div class="sort-by-items">
@@ -37,9 +38,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-/// platforms/{id}
-// https://api.rawg.io/api/games?genres/4
-// https://api.rawg.io/api/games?platforms=49&genres=4&page
+
 export default {
   name: 'FiltersSideBar',
   data: () => ({
@@ -124,7 +123,6 @@ export default {
         genre = genreId.length ? `genres=${genreId}&` : '';
         genreString = `+${genreName}`;
       }
-      console.log(platformString, genreString);
       this.setFilterString(platformString + genreString);
       this.setPlatform(platforms);
       this.setGenre(genre);
@@ -143,7 +141,6 @@ export default {
         this.setSortBy(sortQuery);
         this.setPage(1);
         this.searchGamesCreatedAll();
-        console.log(element);
       }
     },
   },

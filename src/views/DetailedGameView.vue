@@ -1,6 +1,6 @@
 <template>
    <div>
-     <header class="header">
+     <!-- <header class="header">
     <b-navbar type="dark" class="navbar"
     fixed="top" variant="dark">
       <b-container>
@@ -8,10 +8,10 @@
         @click="backToMain" class="mb-2">
       <b-icon icon="arrow-left" aria-hidden="true"></b-icon> back
     </b-button></BNavbarBrand>
-<h3 class="mx-auto">{{currentGame.name}}({{currentGame.released.slice(0,4)}})</h3>
+<h3 class="mx-auto">{{currentGame.name ||''}}({{currentGame.released.slice(0,4)}})</h3>
       </b-container>
     </b-navbar>
-  </header>
+  </header> -->
   <GameDetails/>
    </div>
 </template>
@@ -26,10 +26,19 @@ export default {
     GameDetails,
   },
   computed: {
-    ...mapGetters('gamesReleased', ['currentGame']),
+    ...mapGetters('gamesReleased', ['currentGame', 'currentPage']),
+  },
+  watch: {
+    currentPage: 'redirectHome',
+
+  },
+  mounted() {
+    if (this.currentGame == null) {
+      this.$router.push({ name: 'Main' });
+    }
   },
   methods: {
-    backToMain() {
+    redirectHome() {
       this.$router.push({ name: 'Main' });
     },
   },
@@ -41,5 +50,20 @@ h3 {
 }
 .logo{
   position: absolute;
+}
+@media (max-width: 996px) {
+h3 {
+  font-size: 1.55rem;
+}
+}
+@media( max-width:776px)  {
+.logo {
+  position: relative;
+  padding-bottom: 0;
+}
+.navbar {
+  padding:0;
+  padding-top: 5px;
+}
 }
 </style>

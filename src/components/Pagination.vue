@@ -58,6 +58,7 @@ export default {
 <style scoped>
 .game-pagination {
   margin-top: 30px;
+  flex-wrap: wrap;
 
 }
 .game-pagination >>> .pagination .page-item .page-link {
