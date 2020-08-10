@@ -6,7 +6,7 @@
     <span>{{game.name}} {{releaseDate}}</span>
   </div>
   <div class="game-item-more-info">
-    <b-button class="moreInfo-btn shadow-none">More Info</b-button>
+    <b-button class="moreInfo-btn shadow-none" @click="detailed()">More Info</b-button>
   </div>
   <div class="game-item-platforms">
     <b-dropdown id="dropdown-dropup" dropup text="Platforms"
@@ -25,6 +25,8 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'GameItem',
   props: {
@@ -44,6 +46,16 @@ export default {
     },
     genre() {
       return this.game.genres.length ? this.game.genres[0].name : null;
+    },
+  },
+  methods: {
+    ...mapActions('gamesReleased', ['setCurrentGame']),
+    setGame() {
+      this.setCurrentGame(this.game);
+    },
+    detailed() {
+      this.setGame();
+      this.$router.push({ name: 'Detailed' });
     },
   },
 };

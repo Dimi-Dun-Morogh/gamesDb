@@ -11,20 +11,26 @@
     <div class="mt-3">Select platform:</div>
   </div>
   <div class="select-platform">
-        <!-- <b-form-select v-model="selectedPlatform" :options="optionsPlatform"
-         size="sm" class="mt-3"></b-form-select>
-    <div class="mt-3">Selected Platform: <strong>{{ selectedPlatform }}</strong></div> -->
     <span v-for="(platform,index) in platforms"
      :key="index"
-     :data-id="platform.id"
+     :data-id="platform.id+'-'+platform.name"
      @click="clickPlatform"
      >
       {{platform.name}}
     </span>
   </div>
-      </div>
-       <b-button size="sm" class="btn-filter" @click="SearchFiltered"><b-icon icon="search"
+         <b-button size="sm" class="btn-filter" @click="SearchFiltered"><b-icon icon="search"
      aria-hidden="true"></b-icon>Search</b-button>
+     <div class="sort-by-title">Sort by:</div>
+     <div class="sort-by-items">
+       <ul @click="clickSort">
+         <li data-query="-released">Date</li>
+         <li data-query="-rating">Rating</li>
+         <li data-query="name">Aplhabet</li>
+       </ul>
+     </div>
+      </div>
+
     </b-sidebar>
   </div>
 </template>
@@ -37,45 +43,47 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'FiltersSideBar',
   data: () => ({
+    sortString: '',
+    genreString: '',
     selectedGenre: '',
     optionsGenre: [
       {
-        value: '',
+        value: '-All genres',
         text: 'All genres',
       },
       {
-        value: '4',
+        value: '4-Action',
         text: 'Action',
       },
       {
-        value: '3',
+        value: '3-Adventure',
         text: 'Adventure',
       },
       {
-        value: '51',
+        value: '51-Indie',
         text: 'Indie',
       },
       {
-        value: '5',
+        value: '5-RPG',
         text: 'RPG',
       },
       {
-        value: '10',
+        value: '10-Strategy',
         text: 'Strategy',
       },
       {
-        value: '2',
+        value: '2-Shooter',
         text: 'Shooter',
       },
       {
-        value: '6',
+        value: '6-Fighting',
         text: 'Fighting',
       }, {
-        value: '59',
+        value: '59-massively-multiplayer',
         text: 'massively-multiplayer',
       },
       {
-        value: '1',
+        value: '1-Racing',
         text: 'Racing',
       }],
     selectedPlatform: '',
@@ -85,7 +93,7 @@ export default {
     ...mapGetters('gamesReleased', ['platforms']),
   },
   methods: {
-    ...mapActions('gamesReleased', ['setFilter', 'setPage', 'searchGamesCreatedAll']),
+    ...mapActions('gamesReleased', ['setGenre', 'setPage', 'searchGamesCreatedAll', 'setSortBy', 'setPlatform', 'setFilterString']),
     clickPlatform(e) {
       const container = document.querySelector('.select-platform');
       const element = e.target;
@@ -102,22 +110,41 @@ export default {
       }
     },
     SearchFiltered() {
-      let filterQuery = `platforms=${this.selectedPlatform}&`;
-      if (this.selectedPlatform.length && this.selectedGenre.length) {
-        filterQuery = `platforms=${this.selectedPlatform}&genres=${this.selectedGenre}&`;
+      let platforms = '';
+      let platformString = '';
+      let genre = '';
+      let genreString = '';
+      if (this.selectedPlatform) {
+        const [platform, platformName] = this.selectedPlatform.split('-');
+        platforms = `platforms=${platform}&`;
+        platformString = `+${platformName}`;
       }
-      if (!this.selectedPlatform.length && this.selectedGenre.length) {
-        filterQuery = `genres=${this.selectedGenre}&`;
+      if (this.selectedGenre) {
+        const [genreId, genreName] = this.selectedGenre.split('-');
+        genre = genreId.length ? `genres=${genreId}&` : '';
+        genreString = `+${genreName}`;
       }
-      if (this.selectedPlatform.length && !this.selectedGenre.length) {
-        filterQuery = `platforms=${this.selectedPlatform}&`;
-      }
-      if (!this.selectedPlatform.length && !this.selectedGenre.length) {
-        filterQuery = '';
-      }
-      this.setFilter(filterQuery);
+      console.log(platformString, genreString);
+      this.setFilterString(platformString + genreString);
+      this.setPlatform(platforms);
+      this.setGenre(genre);
       this.setPage(1);
       this.searchGamesCreatedAll();
+    },
+    clickSort(e) {
+      if (e.target.nodeName === 'LI') {
+        const element = e.target;
+        const container = e.target.parentNode.querySelectorAll('li');
+        const sortQuery = e.target.dataset.query;
+        container.forEach((li) => {
+          if (li !== element) li.classList.remove('selected');
+        });
+        element.classList.toggle('selected');
+        this.setSortBy(sortQuery);
+        this.setPage(1);
+        this.searchGamesCreatedAll();
+        console.log(element);
+      }
     },
   },
 
@@ -153,6 +180,22 @@ padding: 0 10px;
 align-items: center;
 margin-left: auto;
 margin-right: auto;
+margin-top: 20px;
+margin-bottom: 10px;
+}
+.sort-by-title{
+      border-bottom: 1px solid;
+    padding-bottom: 10px;
+}
+.sort-by-items ul {
+  padding: 0;
+  padding-top: 5px;
+}
+.sort-by-items li {
+  display: inline;
+  list-style: none;
+  margin-right: 6px;
+  cursor:pointer;
 }
 
 </style>

@@ -4,12 +4,17 @@
       <b-container>
         <BNavbarBrand href="#" class="logo"> GamesDB</BNavbarBrand>
         <div class="pickYear">
-    <label for="range-1">Top by year</label>
+    <label for="range-1">Set year</label>
     <b-form-input id="range-1" v-model="year" type="range" min="1970" max="2020"></b-form-input>
     <div class="button-wrap">
       <!-- <div class="mt-2">Year: {{ year }}</div> -->
-     <b-button size="sm" @click="searchYear"><b-icon icon="search"
+      <b-button-group>
+<b-button size="sm" @click="searchYear"><b-icon icon="search"
      aria-hidden="true"></b-icon> {{ year }}</b-button>
+     <b-button size="sm" variant="danger" @click="resetYear"><b-icon icon="x-circle"
+     aria-hidden="true"></b-icon> reset</b-button>
+      </b-button-group>
+
     </div>
   </div>
         <b-nav-form>
@@ -42,20 +47,28 @@ export default {
     year: 2020,
   }),
   methods: {
-    ...mapActions('gamesReleased', ['setPage', 'searchGamesCreatedAll', 'setFilter']),
+    ...mapActions('gamesReleased', ['setPage', 'searchGamesCreatedAll', 'setFilter', 'setDates', 'setQuery']),
     searchQuery(e) {
       e.preventDefault();
       // this.$emit('onSearch', this.searchValue);
       const query = `search=${this.searchValue}&`;
       this.setPage(1);
-      this.setFilter(query);
+      this.setQuery(query);
 
       this.searchGamesCreatedAll();
     },
     searchYear() {
       const dates = `dates=${this.year}-01-01,${this.year}-12-12&`;
       this.setPage(1);
-      this.setFilter(dates);
+      this.setDates(dates);
+
+      this.searchGamesCreatedAll();
+    },
+    resetYear() {
+      this.year = 2020;
+      const dates = '';
+      this.setPage(1);
+      this.setDates(dates);
 
       this.searchGamesCreatedAll();
     },

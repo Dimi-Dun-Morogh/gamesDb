@@ -10,6 +10,11 @@ const routes = [
     name: 'Main',
     component: MainView,
   },
+  {
+    path: '/detailed',
+    name: 'Detailed',
+    component: () => import('../views/DetailedGameView.vue'),
+  },
   // {
   //   path: '/about',
   //   name: 'About',
