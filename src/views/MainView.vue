@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header  id="head" v-on:onSearch="onSearch"/>
+    <Notification />
     <GamesReleased/>
     <Pagination
     :total="totalResults"
@@ -10,7 +11,7 @@
     v-on:manualPage="onPageChange"
     />
     <div class="api">
-      API - <a href="https://api.rawg.io">RAWG best api EU</a>
+      API - <a href="https://rawg.io/apidocs">RAWG best api EU</a>
     </div>
   </div>
 </template>
@@ -20,6 +21,7 @@
 import Header from '@/components/Header.vue';
 import GamesReleased from '@/components/GamesReleased.vue';
 import Pagination from '@/components/Pagination.vue';
+import Notification from '@/components/Notification.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -28,6 +30,7 @@ export default {
     Header,
     GamesReleased,
     Pagination,
+    Notification,
   },
   computed: {
     ...mapGetters('gamesReleased', ['currentPage', 'totalResults', 'gamesPerPage']),
@@ -50,13 +53,21 @@ export default {
 <style scoped>
 .api {
   text-align: center;
-background-color: rgba(0,0,0,.4);
+ background-color: rgba(0,0,0,.7);
 color: #fff;
+font-size: 10px;
+max-width: 130px;
+margin-left: auto;
+margin-right: auto;
+border-radius: 5px;
+padding: 2px;
+font-weight: bold;
 }
 .api a {
-  font-size: 14px;
+  font-size: 10px;
 text-decoration: none;
 color: black;
 font-weight: bold;
+color:#fff;
 }
 </style>

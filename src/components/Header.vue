@@ -1,32 +1,34 @@
 <template>
- <header class="header">
+  <header class="header">
     <b-navbar type="dark" class="navbar" variant="dark">
       <b-container>
-        <BNavbarBrand href="#" class="logo"> GamesDB</BNavbarBrand>
+        <BNavbarBrand href="#" class="logo">GamesDB</BNavbarBrand>
         <div class="pickYear">
-    <label for="range-1">Set year</label>
-    <b-form-input id="range-1" v-model="year" type="range" min="1970" max="2020"></b-form-input>
-    <div class="button-wrap">
-      <b-button-group>
-<b-button size="sm" @click="searchYear"><b-icon icon="search"
-     aria-hidden="true"></b-icon> {{ year }}</b-button>
-     <b-button size="sm" variant="danger" @click="resetYear"><b-icon icon="x-circle"
-     aria-hidden="true"></b-icon> reset</b-button>
-      </b-button-group>
-
-    </div>
-  </div>
+          <label for="range-1">Set year</label>
+          <b-form-input id="range-1" v-model="year" type="range" min="1970" max="2020"/>
+          <div class="button-wrap">
+            <b-button-group>
+              <b-button size="sm" @click="searchYear">
+                <b-icon icon="search" aria-hidden="true"></b-icon>
+                {{ year }}
+              </b-button>
+              <b-button size="sm" variant="danger" @click="resetYear">
+                <b-icon icon="x-circle" aria-hidden="true"></b-icon>reset
+              </b-button>
+            </b-button-group>
+          </div>
+        </div>
         <b-nav-form>
           <b-form-input
             class="mr-sm-2 search-input"
             placeholder="Search"
             v-model="searchValue"
-            debounce="5000"
+            debounce="1500"
             @keyup.enter="searchQuery"
           ></b-form-input>
-
         </b-nav-form>
-        <FiltersSideBar class="filters"/>
+        <FiltersSideBar class="filters" />
+        <AuthModal class="auth-modal" />
       </b-container>
     </b-navbar>
   </header>
@@ -34,21 +36,24 @@
 <script>
 import { mapActions } from 'vuex';
 import FiltersSideBar from '@/components/FiltersSideBar.vue';
+import AuthModal from '@/components/AuthModal.vue';
 
 export default {
   name: 'Header',
   components: {
     FiltersSideBar,
+    AuthModal,
   },
   data: () => ({
     searchValue: '',
     year: 2020,
   }),
+  watch: {
+    searchValue: 'searchQuery',
+  },
   methods: {
     ...mapActions('gamesReleased', ['setPage', 'searchGamesCreatedAll', 'setFilter', 'setDates', 'setQuery']),
-    searchQuery(e) {
-      e.preventDefault();
-      // this.$emit('onSearch', this.searchValue);
+    searchQuery() {
       const query = `search=${this.searchValue}&`;
       this.setPage(1);
       this.setQuery(query);
@@ -78,7 +83,7 @@ export default {
 .navbar {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
-.logo{
+.logo {
   position: relative;
 }
 .search-input {
@@ -97,22 +102,31 @@ export default {
   color: #ffff;
   position: absolute;
   background: rgba(255, 255, 255, 0.2);
-  top:55px;
+  top: 56px;
   border-bottom-left-radius: 5px;
-border-bottom-right-radius: 5px;
-padding-bottom: 5px;
-background: linear-gradient(90deg, rgba(2, 0, 36, 0.41) 0%,
- rgb(11, 19, 14) 52%, rgb(137, 138, 159) 100%);
+  border-bottom-right-radius: 5px;
+  padding-bottom: 5px;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 0.41) 0%,
+    rgb(11, 19, 14) 52%,
+    rgb(137, 138, 159) 100%
+  );
 }
 .filters {
   position: absolute;
-right: 0;
-top: 60px;
+  right: 0;
+  top: 60px;
+}
+.auth-modal {
+  position: absolute;
+  right: 0;
+  top: 110px;
 }
 
-@media (max-width:376px) {
+@media (max-width: 376px) {
   .filters {
-    top:265px;
+    top: 265px;
   }
 }
 </style>

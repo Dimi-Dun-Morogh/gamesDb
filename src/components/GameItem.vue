@@ -76,6 +76,7 @@ export default {
 .game-item:hover {
    box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.7);
   transform: scale(1.02);
+  border: 2px solid black;
 }
 .game-item-poster {
     position: absolute;
@@ -118,6 +119,7 @@ font-size: 15px;
 }
 .dropdown-platforms >>> .dropdown-toggle{
   border-radius: 0;
+  box-shadow: none;
 }
 .game-item-more-info {
   display: flex;
@@ -127,6 +129,7 @@ margin-top: auto;
 .moreInfo-btn {
 border-radius: 0;
 width: 107.27px;
+box-shadow: none;
 }
 .moreInfo-btn:focus,.moreInfo-btn:active,.moreInfo-btn:hover {
   border-color: transparent;

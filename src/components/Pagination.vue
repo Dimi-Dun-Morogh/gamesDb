@@ -11,7 +11,7 @@
     />
     <div class="manual-page">
       <b-form-input class="manual-input" size="sm" v-model="text"
-       placeholder="page"></b-form-input>
+       placeholder="page" @keyup.enter="manualPage"></b-form-input>
       <b-button size="sm" class="manual-button shadow-none"
        @click="manualPage">
         <b-icon icon="arrow-right"></b-icon></b-button>
@@ -51,6 +51,7 @@ export default {
   methods: {
     manualPage() {
       this.$emit('manualPage', this.text);
+    //  e.preventDefault();
     },
   },
 };
@@ -60,6 +61,9 @@ export default {
   margin-top: 30px;
   flex-wrap: wrap;
 
+}
+.game-pagination >>> .pagination{
+  margin-bottom: 5px;
 }
 .game-pagination >>> .pagination .page-item .page-link {
   background-color:transparent;

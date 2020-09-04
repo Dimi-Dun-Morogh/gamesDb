@@ -4,7 +4,7 @@
         @click="backToMain" class="mb-2 btn-back">
       <b-icon icon="arrow-left" aria-hidden="true"></b-icon> back
     </b-button>
-<h3>{{currentGame.name}}({{currentGame.released.slice(0,4)}})</h3>
+<h3>{{currentGame.name}}{{releaseDate}}</h3>
 <div class="clip" v-show="currentGame.clip!==null">
   <video :src="clipSrc" controls></video>
 
@@ -79,6 +79,9 @@ export default {
     clipSrc() {
       return this.currentGame.clip !== null ? this.currentGame.clip.clip : '';
     },
+    releaseDate() {
+      return this.currentGame.released !== null ? `(${(this.currentGame.released).slice(0, 4)})` : '';
+    },
   },
   watch: {
   },
@@ -108,7 +111,7 @@ background-color: rgba(0,0,0,.5);
 .slider {
 overflow: hidden;}
 .slider img {
-  /* height: 350px ; */
+  height: 350px ;
 }
 ul {margin: 0;
 padding: 0;
