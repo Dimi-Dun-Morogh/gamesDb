@@ -5,6 +5,7 @@ import { getUserIdToken } from '@/services/firebase/auth.service';
 import gamesReleased from './gamesReleased';
 import authStore from './auth';
 import notifyStore from './notify';
+import userStore from './user';
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
     gamesReleased,
     authStore,
     notifyStore,
+    userStore,
   },
 });
 
@@ -25,6 +27,7 @@ firebase.auth().onAuthStateChanged(async (userData) => {
   if (userData) {
     const token = await getUserIdToken();
     localStorage.setItem(process.env.VUE_APP_LS_TOKEN_KEY, token);
+    store.dispatch('setUserState');
   } else {
     localStorage.removeItem(process.env.VUE_APP_LS_TOKEN_KEY);
   }

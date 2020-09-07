@@ -59,7 +59,7 @@
       </div>
     </b-modal>
     <b-button @click="showModal" v-show="!isLoggedIn">Open Modal</b-button>
-    <b-button v-show="isLoggedIn" @click="logoutForm">Profile</b-button>
+    <b-button v-show="isLoggedIn" @click="goProfile">Profile</b-button>
   </div>
 </template>
 
@@ -87,7 +87,7 @@ export default {
     isLoggedIn: 'hideModal',
   },
   methods: {
-    ...mapActions('authStore', ['signUp', 'login', 'logout']),
+    ...mapActions('authStore', ['signUp', 'login']),
     showModal() {
       this.$refs['my-modal'].show();
     },
@@ -113,8 +113,8 @@ export default {
       const { email, password } = this;
       this.login({ email, password });
     },
-    logoutForm() {
-      this.logout();
+    goProfile() {
+      this.$router.push({ name: 'Profile' });
     },
   },
 };

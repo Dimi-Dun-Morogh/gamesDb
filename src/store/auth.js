@@ -1,4 +1,5 @@
 import { firebaseSignUp, firebaseLogin, firebaseLogout } from '@/services/firebase/auth.service';
+import axios from '@/plugins/axios';
 import mutations from './mutations';
 
 const { IS_LOGGED_IN } = mutations;
@@ -26,7 +27,12 @@ const authStore = {
     async signUp({ commit, dispatch }, { email, password }) {
       try {
         const data = await firebaseSignUp(email, password);
-        console.log(data);
+        if (data.user) {
+        // здесь можно сгенерировать temp-никнейм и создать юзер схема в ДБ
+          const tempUserName = email.slice(0, 3) + Number(new Date());
+          localStorage.setItem(process.env.VUE_APP_LS_TOKEN_KEY, data.user.xa);
+          axios.post('api/users', { displayName: tempUserName });
+        }
         commit(IS_LOGGED_IN, true);
         dispatch(
           'loadMessage',
@@ -40,7 +46,6 @@ const authStore = {
           { root: true },
         );
       } catch (error) {
-        console.log(error);
         dispatch(
           'loadMessage',
           {
@@ -52,14 +57,24 @@ const authStore = {
           },
           { root: true },
         );
+        Promise.reject(error);
       }
     },
     async login({ dispatch }, { email, password }) {
       try {
-        const data = await firebaseLogin(email, password);
-        console.log(data);
+        await firebaseLogin(email, password);
+        dispatch(
+          'loadMessage',
+          {
+            variant: 'success',
+            title: 'success',
+            message: 'login success',
+            duration: 6000,
+            showClose: true,
+          },
+          { root: true },
+        );
       } catch (error) {
-        console.log(error);
         dispatch(
           'loadMessage',
           {
@@ -75,10 +90,9 @@ const authStore = {
     },
     async logout() {
       try {
-        const data = await firebaseLogout();
-        console.log(data);
+        await firebaseLogout();
       } catch (error) {
-        console.log(error);
+        Promise.reject(error);
       }
     },
   },

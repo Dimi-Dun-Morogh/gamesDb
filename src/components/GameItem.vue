@@ -14,6 +14,8 @@
 
   </b-dropdown>
   </div>
+    <b-button class="moreInfo-btn btn-success shadow-none"
+     @click="addToFavs">favs</b-button>
     <b-button class="moreInfo-btn btn-success shadow-none" @click="detailed()">More Info</b-button>
   </div>
 
@@ -26,7 +28,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'GameItem',
@@ -37,6 +39,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('gamesReleased', ['favoriteGames', 'isItInFavs']),
     posterBg() {
       return {
         'background-image': this.game.background_image !== null ? `url(${this.game.background_image})` : 'url(https://www.wwe.com/f/styles/wwe_large/public/2016/02/Yokozuna_bio--12cbb0873e1b83a7fa05ec45614fc134.jpg)',
@@ -50,13 +53,23 @@ export default {
     },
   },
   methods: {
-    ...mapActions('gamesReleased', ['setCurrentGame']),
+    ...mapActions('gamesReleased', ['setCurrentGame', 'addFavoriteGame']),
     setGame() {
       this.setCurrentGame(this.game);
     },
     detailed() {
       this.setGame();
       this.$router.push({ name: 'Detailed' });
+    },
+    addToFavs() {
+      const inFav = this.isItInFavs(this.game.id);
+      console.log(inFav, 'in fav');
+      if (!inFav.length) {
+        console.log('add to fav');
+        this.addFavoriteGame(this.game);
+      } else {
+        console.log('already in favs');
+      }
     },
   },
 };

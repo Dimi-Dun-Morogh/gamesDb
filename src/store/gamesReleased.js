@@ -2,9 +2,22 @@ import axios from '@/plugins/axios';
 import mutations from './mutations';
 
 const {
-  CURRENT_PAGE, CURRENT_QUERY, TOTAL_RESULTS, TOTAL_RESULTS_LAST_MONTH,
-  GAMES_RELEASED, SET_FILTER, SET_PLATFORMS, BG_POSTER, SORT_BY, DATES,
-  SET_QUERY, SET_PLATFORM, SET_GENRE, SET_FILTER_STRING, CURRENT_GAME,
+  CURRENT_PAGE,
+  CURRENT_QUERY,
+  TOTAL_RESULTS,
+  TOTAL_RESULTS_LAST_MONTH,
+  GAMES_RELEASED,
+  SET_FILTER,
+  SET_PLATFORMS,
+  BG_POSTER,
+  SORT_BY,
+  DATES,
+  SET_QUERY,
+  SET_PLATFORM,
+  SET_GENRE,
+  SET_FILTER_STRING,
+  CURRENT_GAME,
+  FAVORITE_GAMES,
 } = mutations;
 const gamesLastMonth = {
   namespaced: true,
@@ -14,6 +27,7 @@ const gamesLastMonth = {
     totalResults: 0,
     totalResultsLastMonth: 0,
     gamesReleased: [],
+    favoriteGames: [],
     filter: '',
     platforms: [],
     currentGame: null,
@@ -41,7 +55,8 @@ const gamesLastMonth = {
     genre: ({ genre }) => genre,
     filterString: ({ filterString }) => filterString,
     currentGame: ({ currentGame }) => currentGame,
-
+    favoriteGames: ({ favoriteGames }) => favoriteGames,
+    isItInFavs: ({ favoriteGames }) => (id) => favoriteGames.filter((obj) => obj.id === id),
   },
   mutations: {
     [CURRENT_PAGE](state, value) {
@@ -89,17 +104,20 @@ const gamesLastMonth = {
     [CURRENT_GAME](state, value) {
       state.currentGame = value;
     },
+    [FAVORITE_GAMES](state, value) {
+      state.favoriteGames = value;
+    },
   },
   actions: {
     async searchGamesLastMonth({ commit, dispatch }) {
       try {
         let dates = '';
         // eslint-disable-next-line no-return-assign
-        await dispatch('getLastMonthDates').then((dates2) => dates = dates2);
+        await dispatch('getLastMonthDates').then((dates2) => (dates = dates2));
         const data = await axios.get(`games?dates=${dates}&ordering=-released`);
         commit(TOTAL_RESULTS_LAST_MONTH, data.count);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
     async searchGamesCreatedAll({ commit, getters }) {
@@ -107,11 +125,13 @@ const gamesLastMonth = {
         gamesPerPage, currentPage, sortBy, dates, query, platform, genre,
       } = getters;
       try {
-        const data = await axios.get(`games?${query}${dates}${genre}${platform}page_size=${gamesPerPage}&ordering=${sortBy}&page=${currentPage}`);
+        const data = await axios.get(
+          `games?${query}${dates}${genre}${platform}page_size=${gamesPerPage}&ordering=${sortBy}&page=${currentPage}`,
+        );
         commit(GAMES_RELEASED, data.results);
         commit(TOTAL_RESULTS, data.count);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
     },
     getLastMonthDates() {
@@ -126,8 +146,12 @@ const gamesLastMonth = {
         const data = await axios.get('platforms');
         commit(SET_PLATFORMS, data.results);
       } catch (error) {
-        console.log(error);
+        throw new Error(error);
       }
+    },
+    addFavoriteGame({ commit, getters }, game) {
+      const { favoriteGames } = getters;
+      commit(FAVORITE_GAMES, [...favoriteGames, game]);
     },
     setPage({ commit }, value) {
       commit(CURRENT_PAGE, value);
