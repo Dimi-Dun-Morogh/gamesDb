@@ -58,7 +58,7 @@
         </b-tabs>
       </div>
     </b-modal>
-    <b-button @click="showModal" v-show="!isLoggedIn">Open Modal</b-button>
+    <b-button @click="showModal" v-show="!isLoggedIn">Login</b-button>
     <b-button v-show="isLoggedIn" @click="goProfile">Profile</b-button>
   </div>
 </template>

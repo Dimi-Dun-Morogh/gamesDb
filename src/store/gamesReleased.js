@@ -17,7 +17,6 @@ const {
   SET_GENRE,
   SET_FILTER_STRING,
   CURRENT_GAME,
-  FAVORITE_GAMES,
 } = mutations;
 const gamesLastMonth = {
   namespaced: true,
@@ -27,7 +26,6 @@ const gamesLastMonth = {
     totalResults: 0,
     totalResultsLastMonth: 0,
     gamesReleased: [],
-    favoriteGames: [],
     filter: '',
     platforms: [],
     currentGame: null,
@@ -55,8 +53,6 @@ const gamesLastMonth = {
     genre: ({ genre }) => genre,
     filterString: ({ filterString }) => filterString,
     currentGame: ({ currentGame }) => currentGame,
-    favoriteGames: ({ favoriteGames }) => favoriteGames,
-    isItInFavs: ({ favoriteGames }) => (id) => favoriteGames.filter((obj) => obj.id === id),
   },
   mutations: {
     [CURRENT_PAGE](state, value) {
@@ -104,9 +100,6 @@ const gamesLastMonth = {
     [CURRENT_GAME](state, value) {
       state.currentGame = value;
     },
-    [FAVORITE_GAMES](state, value) {
-      state.favoriteGames = value;
-    },
   },
   actions: {
     async searchGamesLastMonth({ commit, dispatch }) {
@@ -148,10 +141,6 @@ const gamesLastMonth = {
       } catch (error) {
         throw new Error(error);
       }
-    },
-    addFavoriteGame({ commit, getters }, game) {
-      const { favoriteGames } = getters;
-      commit(FAVORITE_GAMES, [...favoriteGames, game]);
     },
     setPage({ commit }, value) {
       commit(CURRENT_PAGE, value);

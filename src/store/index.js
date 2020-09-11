@@ -6,6 +6,7 @@ import gamesReleased from './gamesReleased';
 import authStore from './auth';
 import notifyStore from './notify';
 import userStore from './user';
+import favStore from './favorites';
 
 Vue.use(Vuex);
 
@@ -18,16 +19,17 @@ const store = new Vuex.Store({
     authStore,
     notifyStore,
     userStore,
+    favStore,
   },
 });
 
 firebase.auth().onAuthStateChanged(async (userData) => {
-  console.log('onAuthStateChanged', userData);
   store.dispatch('setIsLoggedInState', Boolean(userData));
   if (userData) {
     const token = await getUserIdToken();
     localStorage.setItem(process.env.VUE_APP_LS_TOKEN_KEY, token);
     store.dispatch('setUserState');
+    store.dispatch('setfavState');
   } else {
     localStorage.removeItem(process.env.VUE_APP_LS_TOKEN_KEY);
   }

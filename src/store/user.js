@@ -36,6 +36,17 @@ const userStore = {
       try {
         await axios.post('api/users/updateuser', data);
         dispatch('getUserByMail');
+        dispatch(
+          'loadMessage',
+          {
+            variant: 'info',
+            title: 'update',
+            message: 'data update success',
+            duration: 6000,
+            showClose: true,
+          },
+          { root: true },
+        );
       } catch (error) {
         Promise.reject(error);
       }

@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    Profile View
-    <br />
+    <Notification/>
     <div class="buttons-wrap d-flex justify-content-between">
       <b-button @click="goHome">Back to home</b-button>
       <b-button @click="logout">logout</b-button>
@@ -20,6 +19,7 @@
 <script>
 import ProfileDetails from '@/components/ProfileDetails.vue';
 import ProfileFavorites from '@/components/ProfileFavorites.vue';
+import Notification from '@/components/Notification.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -27,6 +27,7 @@ export default {
   components: {
     ProfileDetails,
     ProfileFavorites,
+    Notification,
   },
   computed: {
     ...mapGetters('authStore', ['isLoggedIn']),

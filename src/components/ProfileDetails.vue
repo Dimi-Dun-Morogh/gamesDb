@@ -37,7 +37,7 @@
         <label for="username">username</label>
       </b-col>
       <b-col sm="3">
-        <b-form-input id="username" type="text" disabled v-model="displayName" />
+        <b-form-input id="username" type="text" required v-model="displayName" />
       </b-col>
     </b-row>
     <b-row class="justify-content-center mb-1">
@@ -73,9 +73,11 @@ export default {
       const {
         firstName, lastName, country, displayName,
       } = this;
-      this.updateUserData({
-        firstName, lastName, country, displayName,
-      });
+      if (displayName.length) {
+        this.updateUserData({
+          firstName, lastName, country, displayName,
+        });
+      }
     },
     populateInputs() {
       const {
@@ -86,7 +88,6 @@ export default {
       this.country = country;
       this.displayName = displayName;
       this.email = email;
-      console.log(displayName);
     },
   },
 };
