@@ -66,7 +66,7 @@
      </b-container>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'GameDetails',
@@ -75,7 +75,8 @@ export default {
     sliding: null,
   }),
   computed: {
-    ...mapGetters('gamesReleased', ['currentGame']),
+    ...mapGetters('gamesReleased', ['currentGame', 'currentPage']),
+    ...mapGetters('favStore', ['routeFromFavs']),
     clipSrc() {
       return this.currentGame.clip !== null ? this.currentGame.clip.clip : '';
     },
@@ -86,6 +87,7 @@ export default {
   watch: {
   },
   methods: {
+    ...mapActions('favStore', ['setRouteFavs']),
     onSlideStart() {
       this.sliding = true;
     },
@@ -93,7 +95,15 @@ export default {
       this.sliding = false;
     },
     backToMain() {
-      this.$router.push({ name: 'Main' });
+      if (this.routeFromFavs) {
+        this.setRouteFavs(false);
+        this.$router.push({ name: 'Profile' });
+      } else {
+        this.$router.push({
+          name: 'Main',
+          query: { page: this.currentPage },
+        });
+      }
     },
   },
 };

@@ -6,7 +6,8 @@
           <span>you haven't added any fav's yet</span>
         </b-list-group-item>
         <b-list-group-item class="list-item" v-for="(game, index) in favoriteGames" :key="index">
-          <span>{{game.name}} ({{game.released.slice(0,4)}})</span>
+          <span @click="goDetailed(game)">{{game.name}}
+             {{game.released ? `(${game.released.slice(0,4)})` : ""}}</span>
           <div class="wrap-btns col-sm-6">
             <b-dropdown
               id="dropdown-platforms"
@@ -44,9 +45,15 @@ export default {
     ...mapGetters('favStore', ['favoriteGames']),
   },
   methods: {
-    ...mapActions('favStore', ['removeFavoriteGame']),
+    ...mapActions('favStore', ['removeFavoriteGame', 'setRouteFavs']),
+    ...mapActions('gamesReleased', ['setCurrentGame']),
     deleteGame(id) {
       this.removeFavoriteGame(id);
+    },
+    goDetailed(game) {
+      this.setCurrentGame(game);
+      this.setRouteFavs(true);
+      this.$router.push({ name: 'Detailed' });
     },
   },
 };

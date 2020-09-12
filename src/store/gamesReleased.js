@@ -1,5 +1,6 @@
 import axios from '@/plugins/axios';
 import mutations from './mutations';
+// import router from '../router/index';
 
 const {
   CURRENT_PAGE,
@@ -118,6 +119,7 @@ const gamesLastMonth = {
         gamesPerPage, currentPage, sortBy, dates, query, platform, genre,
       } = getters;
       try {
+        // router.push({ query: { page: currentPage } });
         const data = await axios.get(
           `games?${query}${dates}${genre}${platform}page_size=${gamesPerPage}&ordering=${sortBy}&page=${currentPage}`,
         );
@@ -143,6 +145,7 @@ const gamesLastMonth = {
       }
     },
     setPage({ commit }, value) {
+      console.log('page set in store', value);
       commit(CURRENT_PAGE, value);
     },
     setFilter({ commit }, value) {

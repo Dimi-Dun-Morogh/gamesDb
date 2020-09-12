@@ -6,10 +6,10 @@
       <b-button @click="logout">logout</b-button>
     </div>
     <b-tabs content-class="mt-3 tabs-wrap" justified>
-      <b-tab title="profile details" active>
+      <b-tab title="profile details" :active="!Boolean(favoriteGames.length)">
         <ProfileDetails />
       </b-tab>
-      <b-tab title="favorite items" >
+      <b-tab title="favorite items" :active="Boolean(favoriteGames.length)">
         <ProfileFavorites />
       </b-tab>
     </b-tabs>
@@ -31,6 +31,8 @@ export default {
   },
   computed: {
     ...mapGetters('authStore', ['isLoggedIn']),
+    ...mapGetters('favStore', ['favoriteGames']),
+    ...mapGetters('gamesReleased', ['currentPage']),
   },
   mounted() {
     if (!this.isLoggedIn) this.goHome();
@@ -41,7 +43,10 @@ export default {
   methods: {
     ...mapActions('authStore', ['logout']),
     goHome() {
-      this.$router.push({ name: 'Main' });
+      this.$router.push({
+        name: 'Main',
+        query: { page: this.currentPage },
+      });
     },
   },
 };

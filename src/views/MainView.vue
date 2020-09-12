@@ -7,8 +7,8 @@
     :total="totalResults"
     :perPage="gamesPerPage"
     :currentPage="currentPage"
-    v-on:onPageChanged="onPageChange"
-    v-on:manualPage="onPageChange"
+    v-on:onPageChanged="onPageChanged"
+    v-on:manualPage="onPageChanged"
     />
     <div class="api">
       API - <a href="https://rawg.io/apidocs">RAWG best api EU</a>
@@ -35,17 +35,43 @@ export default {
   computed: {
     ...mapGetters('gamesReleased', ['currentPage', 'totalResults', 'gamesPerPage']),
   },
+  watch: {
+    '$route.query': {
+      handler: 'onPageQueryChange',
+      immediate: true,
+      deep: true,
+    },
+  },
   methods: {
     ...mapActions('gamesStore', ['searchGame']),
     ...mapActions('gamesReleased', ['setPage', 'searchGamesCreatedAll']),
     onSearch(query) {
       this.searchGame(query);
     },
+    onPageQueryChange({ page = 1 }) {
+      console.log(`2, onQueryChange event, page ${page}`);
+      this.onPageChange(Number(page));
+    },
     onPageChange(value) {
+      console.log(`3 onPageChange func, pag ${value}`);
       this.setPage(value);
       this.searchGamesCreatedAll();
       const header = document.querySelector('#head');
       this.$scrollTo(header);
+    },
+    onPageChanged(page) {
+      console.log(`1, on emit from pagination, page ${page}`);
+      this.$router.push({ query: { page } })
+        .catch((err) => {
+          // Ignore the vuex err regarding  navigating to the page they are already on.
+          if (
+            err.name !== 'NavigationDuplicated'
+      && !err.message.includes('Avoided redundant navigation to current location')
+          ) {
+            // But print any other errors to the console
+            console.log(err);
+          }
+        });
     },
   },
 };

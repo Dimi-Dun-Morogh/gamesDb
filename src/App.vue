@@ -52,8 +52,5 @@ export default {
   background-image: url('./assets/wallpaper.jpg');
   background-size: cover;
 }
-body {
- /* background-image: url('./assets/wallpaper.jpg');
- background-size: cover; */
-}
+
 </style>

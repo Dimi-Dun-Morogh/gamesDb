@@ -1,20 +1,25 @@
 import mutations from '@/store/mutations';
 import axios from '@/plugins/axios';
 
-const { FAVORITE_GAMES } = mutations;
+const { FAVORITE_GAMES, ROUTE_FROM_FAVS } = mutations;
 
 const favsStore = {
   namespaced: true,
   state: {
     favoriteGames: [],
+    routeFromFavs: false,
   },
   getters: {
     favoriteGames: ({ favoriteGames }) => favoriteGames,
     isItInFavs: ({ favoriteGames }) => (id) => favoriteGames.filter((obj) => obj.id === id),
+    routeFromFavs: ({ routeFromFavs }) => routeFromFavs,
   },
   mutations: {
     FAVORITE_GAMES(state, value) {
       state.favoriteGames = value;
+    },
+    ROUTE_FROM_FAVS(state, value) {
+      state.routeFromFavs = value;
     },
   },
   actions: {
@@ -37,8 +42,10 @@ const favsStore = {
     },
     async fetchFavs({ commit }) {
       const favs = await axios.get('api/favorites');
-      console.log(favs);
       commit(FAVORITE_GAMES, favs);
+    },
+    setRouteFavs({ commit }, bool) {
+      commit(ROUTE_FROM_FAVS, bool);
     },
   },
 };
