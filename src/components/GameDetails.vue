@@ -16,8 +16,7 @@
       controls
       indicators
       background="#ababab"
-      img-width="1280"
-      img-height="480"
+
       style="text-shadow: 1px 1px 2px #333;"
       @sliding-start="onSlideStart"
       @sliding-end="onSlideEnd"
@@ -25,12 +24,12 @@
     >
       <!-- Text slides with image -->
       <b-carousel-slide v-for="(screen,index) in currentGame.short_screenshots"  :key="index"
-
-      ><template  v-slot:img>
+       class="slide-item">
+      <template  v-slot:img>
         <img :src="screen.image"
         class="d-block img-fluid w-100"
-        width="600px"
-        height="350px">
+
+        >
       </template>
       </b-carousel-slide>
     </b-carousel>
@@ -109,6 +108,9 @@ export default {
 };
 </script>
 <style scoped>
+.container {
+  padding: 0;
+}
 .wrap {
   color: #ffff;
   max-width: 600px;
@@ -118,10 +120,16 @@ export default {
   margin-top: 40px;
 background-color: rgba(0,0,0,.5);
 }
+.slide-item {
+  width: 600px;
+}
+
 .slider {
-overflow: hidden;}
+overflow: hidden;
+max-width: 600px;
+}
 .slider img {
-  height: 350px ;
+  height: 350px;
 }
 ul {margin: 0;
 padding: 0;
@@ -132,7 +140,7 @@ li {
   list-style: none;
 }
 .info-wrap {
-
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   background-color: rgba(0,0,0,.7);
@@ -160,9 +168,28 @@ video {
   position: absolute;
 left: 15px;
 }
+
 @media( max-width:776px)  {
 .logo {
   top:110px;
 }
+.slider {
+  width: 375px;
 }
+.slide-item {
+  width: 375px;
+}
+.slider img {
+  height: 350px;
+  width: 375px;
+}
+}
+
+@media( max-width:400px) {
+.slider {
+  width: 320px;
+}
+
+}
+
 </style>

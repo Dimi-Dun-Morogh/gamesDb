@@ -10,9 +10,6 @@
     v-on:onPageChanged="onPageChanged"
     v-on:manualPage="onPageChanged"
     />
-    <div class="api">
-      API - <a href="https://rawg.io/apidocs">RAWG best api EU</a>
-    </div>
   </div>
 </template>
 
@@ -77,23 +74,4 @@ export default {
 };
 </script>
 <style scoped>
-.api {
-  text-align: center;
- background-color: rgba(0,0,0,.7);
-color: #fff;
-font-size: 10px;
-max-width: 130px;
-margin-left: auto;
-margin-right: auto;
-border-radius: 5px;
-padding: 2px;
-font-weight: bold;
-}
-.api a {
-  font-size: 10px;
-text-decoration: none;
-color: black;
-font-weight: bold;
-color:#fff;
-}
 </style>

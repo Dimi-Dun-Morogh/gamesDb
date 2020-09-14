@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center">
-    <div class="col-sm-7">
+    <div class="col-sm-12 col-md-7">
       <b-list-group>
         <b-list-group-item class="list-item" v-show="!favoriteGames.length">
           <span>you haven't added any fav's yet</span>
@@ -8,7 +8,7 @@
         <b-list-group-item class="list-item" v-for="(game, index) in favoriteGames" :key="index">
           <span @click="goDetailed(game)">{{game.name}}
              {{game.released ? `(${game.released.slice(0,4)})` : ""}}</span>
-          <div class="wrap-btns col-sm-6">
+          <div class="wrap-btns ">
             <b-dropdown
               id="dropdown-platforms"
 
@@ -74,8 +74,16 @@ export default {
   /* transform: scale(1.03); */
   box-shadow: 0px 5px 30px rgba(0, 0, 0, 0.7);
 }
+.wrap-btns {
+  display: flex;
+}
 .wrap-btns >>> button {
   border-radius: 0%;
   margin-right: 1px;
+}
+@media (max-width: 990px) {
+.wrap-btns {
+  flex-direction: column;
+}
 }
 </style>

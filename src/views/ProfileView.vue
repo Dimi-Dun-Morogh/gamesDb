@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container profile-view">
     <Notification/>
     <div class="buttons-wrap d-flex justify-content-between">
       <b-button @click="goHome">Back to home</b-button>
@@ -61,5 +61,8 @@ export default {
 }
 .tabs >>> .active {
 color:#000 !important;
+}
+.profile-view {
+  /* min-height: 100vh; */
 }
 </style>

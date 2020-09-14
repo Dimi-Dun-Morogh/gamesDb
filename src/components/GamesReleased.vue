@@ -54,6 +54,8 @@ padding: 0;
 }
 .wrap  h3 {
   color:#000;
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 2.5px;
 }
 @media (max-width:1200px) {
   .game-items-wrap {
