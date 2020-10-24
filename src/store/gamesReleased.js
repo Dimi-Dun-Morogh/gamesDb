@@ -114,12 +114,12 @@ const gamesLastMonth = {
         throw new Error(error);
       }
     },
-    async searchGamesCreatedAll({ commit, getters }) {
+    async searchGamesCreatedAll({ commit, getters, dispatch }) {
       const {
         gamesPerPage, currentPage, sortBy, dates, query, platform, genre,
       } = getters;
       try {
-        // router.push({ query: { page: currentPage } });
+        dispatch('preloaderStore/setLoader', true, { root: true });
         const data = await axios.get(
           `games?${query}${dates}${genre}${platform}page_size=${gamesPerPage}&ordering=${sortBy}&page=${currentPage}`,
         );
@@ -127,6 +127,8 @@ const gamesLastMonth = {
         commit(TOTAL_RESULTS, data.count);
       } catch (error) {
         throw new Error(error);
+      } finally {
+        dispatch('preloaderStore/setLoader', false, { root: true });
       }
     },
     getLastMonthDates() {

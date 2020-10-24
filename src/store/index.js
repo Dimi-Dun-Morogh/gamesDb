@@ -7,6 +7,7 @@ import authStore from './auth';
 import notifyStore from './notify';
 import userStore from './user';
 import favStore from './favorites';
+import preloaderStore from './preloader';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
     notifyStore,
     userStore,
     favStore,
+    preloaderStore,
   },
 });
 

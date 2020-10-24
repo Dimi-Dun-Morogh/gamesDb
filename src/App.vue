@@ -1,23 +1,30 @@
 <template>
   <div id="app">
-<div id="background"  :style="posterBg"></div>
+    <div id="background" :style="posterBg"></div>
     <div class="wrap">
-      <router-view/>
-    <Footer />
+      <Preloader :preloader="showPreloader">
+        <template v-slot:wrapComponent>
+          <router-view />
+          <Footer />
+        </template>
+      </Preloader>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
 import Footer from '@/components/Footer.vue';
+import Preloader from '@/components/Preloader.vue';
 
 export default {
   name: 'App',
   components: {
     Footer,
+    Preloader,
   },
   computed: {
     ...mapGetters('gamesReleased', ['bgPoster']),
+    ...mapGetters('preloaderStore', ['showPreloader']),
     posterBg() {
       return {
         'background-image': `url(${this.bgPoster})`,
@@ -38,13 +45,13 @@ export default {
   min-height: 100vh;
 }
 *::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* Chrome/Safari/Webkit */
+  width: 0px;
+  background: transparent; /* Chrome/Safari/Webkit */
 }
 
 * {
   scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
 }
 #background {
   position: absolute;
@@ -65,7 +72,7 @@ export default {
   right: 0;
   bottom: 0;
   opacity: 0.8;
-  background-image: url('./assets/wallpaper.jpg');
+  background-image: url("./assets/wallpaper.jpg");
   background-size: cover;
 }
 .wrap {
