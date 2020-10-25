@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios';
 import mutations from './mutations';
-// import router from '../router/index';
+import router from '../router/index';
 
 const {
   CURRENT_PAGE,
@@ -23,7 +23,7 @@ const gamesLastMonth = {
   namespaced: true,
   state: {
     gamesPerPage: 8,
-    currentPage: 1,
+    currentPage: 0,
     totalResults: 0,
     totalResultsLastMonth: 0,
     gamesReleased: [],
@@ -116,13 +116,36 @@ const gamesLastMonth = {
     },
     async searchGamesCreatedAll({ commit, getters, dispatch }) {
       const {
-        gamesPerPage, currentPage, sortBy, dates, query, platform, genre,
+        gamesPerPage, currentPage, sortBy, dates: theDates, query: theQuery, platform, genre,
       } = getters;
       try {
         dispatch('preloaderStore/setLoader', true, { root: true });
-        const data = await axios.get(
-          `games?${query}${dates}${genre}${platform}page_size=${gamesPerPage}&ordering=${sortBy}&page=${currentPage}`,
-        );
+        let queryParams = {
+          page: currentPage,
+          ordering: sortBy,
+          genres: genre,
+          platforms: platform,
+          dates: theDates,
+          query: theQuery,
+        };
+        queryParams = Object.entries(queryParams).filter(([, value]) => value !== '');
+        queryParams = Object.fromEntries(queryParams);
+        router.push({
+          query: {
+            ...queryParams,
+          },
+        }).catch((err) => {
+          // Ignore the vuex err regarding  navigating to the page they are already on.
+          if (
+            err.name !== 'NavigationDuplicated'
+      && !err.message.includes('Avoided redundant navigation to current location')
+          ) {
+            // But print any other errors to the console
+            console.log(err);
+          }
+        });
+        const data = await axios.get(`games${(router.history.current.fullPath).slice(1)}&page_size=${gamesPerPage}`);
+        console.log(router.history.current.fullPath, 'router');
         commit(GAMES_RELEASED, data.results);
         commit(TOTAL_RESULTS, data.count);
       } catch (error) {
@@ -148,7 +171,7 @@ const gamesLastMonth = {
     },
     setPage({ commit }, value) {
       console.log('page set in store', value);
-      commit(CURRENT_PAGE, value);
+      commit(CURRENT_PAGE, Number(value));
     },
     setFilter({ commit }, value) {
       commit(SET_FILTER, value);

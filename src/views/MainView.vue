@@ -7,8 +7,8 @@
     :total="totalResults"
     :perPage="gamesPerPage"
     :currentPage="currentPage"
-    v-on:onPageChanged="onPageChanged"
-    v-on:manualPage="onPageChanged"
+    v-on:onPageChanged="onPageChange"
+    v-on:manualPage="onPageChange"
     />
   </div>
 </template>
@@ -34,41 +34,42 @@ export default {
   },
   watch: {
     '$route.query': {
-      handler: 'onPageQueryChange',
+      handler: 'onQueryChange',
       immediate: true,
       deep: true,
     },
   },
   methods: {
     ...mapActions('gamesStore', ['searchGame']),
-    ...mapActions('gamesReleased', ['setPage', 'searchGamesCreatedAll']),
+    ...mapActions('gamesReleased', ['setGenre', 'setPage', 'searchGamesCreatedAll', 'setSortBy', 'setPlatform', 'setDates', 'searchGamesCreatedAll']),
     onSearch(query) {
       this.searchGame(query);
     },
-    onPageQueryChange({ page = 1 }) {
-      console.log(`2, onQueryChange event, page ${page}`);
-      this.onPageChange(Number(page));
+    onQueryChange(query) {
+      console.log(query, 'onQueryChange');
+      if (+query.page !== +this.currentPage) {
+        //! no double requests
+        // console.log(`query change, query.page ${query.page} currentPage ${this.currentPage}`);
+        this.setQueryParams(query);
+        this.onPageChange(query.page);
+      }
     },
-    onPageChange(value) {
-      console.log(`3 onPageChange func, pag ${value}`);
-      this.setPage(value);
+    onPageChange(page = 1) {
+      console.log(`onpagechange ${page}`);
+      this.setPage(page);
       this.searchGamesCreatedAll();
       const header = document.querySelector('#head');
       this.$scrollTo(header);
     },
-    onPageChanged(page) {
-      console.log(`1, on emit from pagination, page ${page}`);
-      this.$router.push({ query: { page } })
-        .catch((err) => {
-          // Ignore the vuex err regarding  navigating to the page they are already on.
-          if (
-            err.name !== 'NavigationDuplicated'
-      && !err.message.includes('Avoided redundant navigation to current location')
-          ) {
-            // But print any other errors to the console
-            console.log(err);
-          }
-        });
+    setQueryParams({
+      dates = '', genres = '', ordering = '-rating', page = '1', platforms = '',
+    }) {
+      console.log('setting params page', page);
+      this.setGenre(genres);
+      this.setPage(page);
+      this.setSortBy(ordering);
+      this.setPlatform(platforms);
+      this.setDates(dates);
     },
   },
 };

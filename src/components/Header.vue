@@ -61,7 +61,7 @@ export default {
       this.searchGamesCreatedAll();
     },
     searchYear() {
-      const dates = `dates=${this.year}-01-01,${this.year}-12-12&`;
+      const dates = `${this.year}-01-01,${this.year}-12-12`;
       this.setPage(1);
       this.setDates(dates);
 

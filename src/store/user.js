@@ -27,7 +27,6 @@ const userStore = {
       try {
         const res = await axios.get('api/users/userbymail');
         commit(USER, res);
-        console.log('hi getUserByMail');
       } catch (error) {
         Promise.reject(error);
       }

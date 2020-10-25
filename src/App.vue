@@ -2,7 +2,7 @@
   <div id="app">
     <div id="background" :style="posterBg"></div>
     <div class="wrap">
-      <Preloader :preloader="showPreloader">
+      <Preloader :preloader="showPreloader" class="wrap">
         <template v-slot:wrapComponent>
           <router-view />
           <Footer />
@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Footer from '@/components/Footer.vue';
 import Preloader from '@/components/Preloader.vue';
 
@@ -22,6 +22,23 @@ export default {
     Footer,
     Preloader,
   },
+  // mounted() {
+  //   console.log(this.$route.query);
+  //   console.log(this.$router.history.current.fullPath);
+  //   this.setQueryParams(this.$route.query);
+  //   this.$router.push({ path: '/', query: this.$route.query })
+  //     .catch((err) => {
+  //       // Ignore the vuex err regarding  navigating to the page they are already on.
+  //       if (
+  //         err.name !== 'NavigationDuplicated'
+  //     && !err.message.includes('Avoided redundant navigation to current location')
+  //       ) {
+  //         // But print any other errors to the console
+  //         console.error(err);
+  //       }
+  //     });
+  //   this.searchGamesCreatedAll();
+  // },
   computed: {
     ...mapGetters('gamesReleased', ['bgPoster']),
     ...mapGetters('preloaderStore', ['showPreloader']),
@@ -29,6 +46,18 @@ export default {
       return {
         'background-image': `url(${this.bgPoster})`,
       };
+    },
+  },
+  methods: {
+    ...mapActions('gamesReleased', ['setGenre', 'setPage', 'searchGamesCreatedAll', 'setSortBy', 'setPlatform', 'setDates', 'searchGamesCreatedAll']),
+    setQueryParams({
+      dates = '', genres = '', ordering = '-rating', page = '1', platforms = '',
+    }) {
+      this.setGenre(genres);
+      this.setPage(page);
+      this.setSortBy(ordering);
+      this.setPlatform(platforms);
+      this.setDates(dates);
     },
   },
 };

@@ -8,6 +8,7 @@
       prev-text="Prev"
       next-text="Next"
       last-number
+      v-if="total>0"
     />
     <div class="manual-page">
       <b-form-input class="manual-input" size="sm" v-model="text"
@@ -27,11 +28,11 @@ export default {
   props: {
     currentPage: {
       Type: Number,
-      default: 1,
+      default: 0,
     },
     total: {
       Type: Number,
-      default: 1,
+      default: 0,
     },
     perPage: {
       Type: Number,

@@ -22,7 +22,6 @@ export default {
   name: 'GamesLastMonth',
   mounted() {
     this.searchGamesLastMonth();
-    // this.searchGamesCreatedAll();
     this.getPlatforms();
   },
   components: {

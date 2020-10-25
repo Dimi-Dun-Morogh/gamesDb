@@ -115,12 +115,12 @@ export default {
       let genreString = '';
       if (this.selectedPlatform) {
         const [platform, platformName] = this.selectedPlatform.split('-');
-        platforms = `platforms=${platform}&`;
+        platforms = platform;
         platformString = `+${platformName}`;
       }
       if (this.selectedGenre) {
         const [genreId, genreName] = this.selectedGenre.split('-');
-        genre = genreId.length ? `genres=${genreId}&` : '';
+        genre = genreId;
         genreString = `+${genreName}`;
       }
       this.setFilterString(platformString + genreString);
