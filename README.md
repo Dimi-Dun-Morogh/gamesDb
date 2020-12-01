@@ -27,3 +27,4 @@ it will screw navigation if it was page 3 in url for example~~ (that was due to 
 - [ ] - refactor DetailedGameViews to fetch game by id, to support query params and additional data;
 - [ ] - implement new func to gather and validate query params (GamesreleasedStore lines 132-133...);
 - [ ] - update url on @backToHome btn click from profile and from detailedGameView
+- [ ] - add some message on first site load due to heroku idling latency
